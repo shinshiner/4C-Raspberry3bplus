@@ -1,0 +1,1 @@
+arecord --device=plughw:1,0 --format S16_LE --rate 16000 -c 1 -d 5 test.wav

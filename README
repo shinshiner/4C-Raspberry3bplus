@@ -1,0 +1,35 @@
+版本号:
+-------
+  - V1.2.0
+
+发布内容：
+----------
+  - 本次release包含：
+    - speech_sdk.h   : SDK头文件
+    - libmobvoisdk.so: SDK共享库文件，位于lib目录下
+    - .mobvoi        : SDK运行所需的配置文件，为隐藏目录
+    - samples        : 样例代码及对应的可执行文件
+
+支持功能：
+----------
+  1. 热词唤醒（你好问问）
+  2. 在线、离线、混合（离在线）语音识别
+  3. 多关键词识别
+  4. 在线、离线、混合（离在线）语音合成
+
+操作参考：
+----------
+  1. 配置文件:
+  ------------
+    1.1 拷贝.mobvoi到某路径下（该路径为任意持久化路径，需要程序有可写权限，例如/var/）
+    1.2 设置该路径：mobvoi_recognizer_set_params("mobvoi_folder", "/var/.mobvoi/")
+
+  2. Audio Dump:
+  --------------
+    - 调用mobvoi_set_vlog_level(3)开启audio dump。将生成record.pcm到.mobvoi/audio_dump下
+      其中的.mobvoi目录，即是上文中mobvoi_recognizer_set_params()所配置的目录
+
+  3. 示例代码:
+  ------------
+    - 请参考samples文件夹下的sample code和speech_sdk.h的注释进行开发
+    - 如果要运行附带的示例程序，应先设置LD_LIBRARY_PATH以包含libmobvoisdk.so所在的目录

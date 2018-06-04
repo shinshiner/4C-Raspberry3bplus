@@ -1,0 +1,1 @@
+sudo aplay --device=plughw:0,0 test.wav

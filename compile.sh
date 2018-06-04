@@ -1,0 +1,1 @@
+g++ example.c -Wall -L. -lmobvoisdk -lpthread -o ./samples/bin/main

@@ -1,0 +1,1 @@
+sox -t raw -c 2 -e signed-integer -b 16 -r 8000 $1.pcm $1.wav
