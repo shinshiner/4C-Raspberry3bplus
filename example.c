@@ -14,6 +14,7 @@ pthread_cond_t cond;
 
 static const int kBufferSize = 640;
 static const int kLineWrapLength = 100;
+static char buffer[kBufferSize];
 
 static const int kPlaySampleRate = 16000;
 static const int kPlayChannelNum = 2;
@@ -195,7 +196,7 @@ int main(int argc, const char* argv[]) {
   mobvoi_tts_init();
   mobvoi_recognizer_set_params("mobvoi_folder", "/home/pi/speechsdk-1.2.0/");
   mobvoi_recognizer_set_params(
-      "location", "中国,北京市,北京市,海淀区,苏州街,3号,39.989602,116.316568");
+      "location", "中国,上海市,上海市,闵行区,东川路,800号,31.023885,121.437449");
 
 
   mobvoi_recognizer_handler_vtable* speech_handlers =
