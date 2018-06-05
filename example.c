@@ -83,6 +83,20 @@ std::string GetTTS(const std::string& final_transcription) {
   return "问问没有听清,您能再说一次吗";
 }
 
+static void* tts_read() {
+  std::string file_name = "res";
+  file_name += ".pcm";
+  std::ofstream output(file_name.c_str());
+  int data_bytes = -1;
+  memset(buffer, 0, sizeof(buffer));
+  while ((data_bytes = mobvoi_tts_read_data(buffer, kBufferSize)) != -1) {
+    output.write(buffer, data_bytes);
+  }
+  output.close();
+  std::cout << "read mix tts successfully" << std::endl;
+  return NULL;
+}
+
 void on_result(const char* result) {
   std::cout << "--------> dummy on_result: " << result << std::endl;
   std::string s(result);
@@ -93,6 +107,10 @@ void on_result(const char* result) {
   }
   std::string tts = GetTTS(result);
   std::cout << tts << std::endl;
+
+  mobvoi_tts_start_synthesis(MOBVOI_TTS_MIX, tts.c_str());
+  tts_read();
+  mobvoi_tts_cancel_synthesis();
 
   pthread_mutex_lock(&mutex);
   in_the_session = false;
@@ -174,6 +192,7 @@ int main(int argc, const char* argv[]) {
   pthread_cond_init(&cond, NULL);
 
   mobvoi_sdk_init(kAppKey.c_str());
+  mobvoi_tts_init();
   mobvoi_recognizer_set_params("mobvoi_folder", "/home/pi/speechsdk-1.2.0/");
   mobvoi_recognizer_set_params(
       "location", "中国,北京市,北京市,海淀区,苏州街,3号,39.989602,116.316568");

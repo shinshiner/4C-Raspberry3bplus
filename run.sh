@@ -1,2 +1,2 @@
 cd ./samples/bin;
-./main SEMANTIC ../../test.wav
+./main ONEBOX ../../test.wav
