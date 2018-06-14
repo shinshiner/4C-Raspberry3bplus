@@ -19,10 +19,8 @@ static char buffer[kBufferSize];
 static const int kPlaySampleRate = 16000;
 static const int kPlayChannelNum = 2;
 
-// Please refer to the following URL to obtain a valid application key:
-//   http://ai.chumenwenwen.com/pages/document/get-started
-//static const std::string kAppKey = "072232D5CBEFD8CF6F5DF538C3C3A096";
-static const std::string kAppKey = "F518D4D34EC6528A1F186C2C3A700FF2";
+// Appkey 请去出门问问官网下载
+static const std::string kAppKey = "00000000000000000000000000000000";
 static const std::string kAsr = "ASR";
 static const std::string kSemantic = "SEMANTIC";
 static const std::string kOnebox = "ONEBOX";
@@ -55,6 +53,7 @@ void on_final_transcription(const char* result) {
   }
 }
 
+// 把 SDK 的识别结果转化为String
 std::string GetTTS(const std::string& final_transcription) {
   static const std::string kPromptWords[] = {
     std::string("\"displayText\":\""),
@@ -84,6 +83,7 @@ std::string GetTTS(const std::string& final_transcription) {
   return "问问没有听清,您能再说一次吗";
 }
 
+// 合成音频文件（.pcm）
 static void* tts_read() {
   std::string file_name = "res";
   file_name += ".pcm";
@@ -98,6 +98,7 @@ static void* tts_read() {
   return NULL;
 }
 
+// 每次识别结束时调用
 void on_result(const char* result) {
   std::cout << "--------> dummy on_result: " << result << std::endl;
   std::string s(result);
@@ -169,8 +170,8 @@ int main(int argc, const char* argv[]) {
     show_usage();
     return 1;
   }
-  // type = MOBVOI_RECOGNIZER_ONLINE_SEMANTIC;
 
+  // 选择使用模式，若要用语音助手请选择 ONEBOX 模式
   std::string online_type(argv[1]);
   if (online_type == "ASR") {
     type = MOBVOI_RECOGNIZER_ONLINE_ASR;
@@ -180,6 +181,7 @@ int main(int argc, const char* argv[]) {
     type = MOBVOI_RECOGNIZER_ONLINE_ONEBOX;
   }
 
+  // 读取音频文件（.wav）
   std::ifstream test_file;
   test_file.open(argv[2]);
   // Read the audio file specified by the command line argument
@@ -188,7 +190,7 @@ int main(int argc, const char* argv[]) {
     return 2;
   }
 
-  // SDK initilalization, including callback functions
+  // SDK 和回调函数的初始化
   pthread_mutex_init(&mutex, NULL);
   pthread_cond_init(&cond, NULL);
 
@@ -197,7 +199,6 @@ int main(int argc, const char* argv[]) {
   mobvoi_recognizer_set_params("mobvoi_folder", "/home/pi/speechsdk-1.2.0/");
   mobvoi_recognizer_set_params(
       "location", "中国,上海市,上海市,闵行区,东川路,800号,31.023885,121.437449");
-
 
   mobvoi_recognizer_handler_vtable* speech_handlers =
       new mobvoi_recognizer_handler_vtable;
@@ -214,7 +215,7 @@ int main(int argc, const char* argv[]) {
 
   mobvoi_recognizer_start(type);
 
-  // Send the audio data in a separated thread
+  // 新开线程把读入的音频文件送给 SDK 处理
   pthread_t tid;
   pthread_create(&tid, NULL, send_audio_thread, &test_file);
   pthread_mutex_lock(&mutex);
@@ -224,7 +225,7 @@ int main(int argc, const char* argv[]) {
   }
   pthread_mutex_unlock(&mutex);
 
-  // SDK clean up
+  // SDK 清理残留空间
   std::cout << "start sdk cleanup" << std::endl;
   mobvoi_sdk_cleanup();
   std::cout << "end sdk cleanup" << std::endl;

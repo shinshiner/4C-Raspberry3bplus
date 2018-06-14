@@ -1,4 +1,4 @@
-# 4C-Raspberry3bpuls
+# 4C-Raspberry3bplus
 
 基于树莓派3b+和出门问问平台的语音识别与分析代码
 
@@ -14,17 +14,17 @@
 
 ## 出门问问sdk
 
-[传送门](https://ai.chumenwenwen.com/pages/document/intro?id=download) 或用repo里自带的sdk-1.2.0
+[传送门](https://ai.chumenwenwen.com/pages/document/intro?id=download) 或用repo里自带的sdk-1.2.0（.mobvoi/里的文件）
 
 ## Python库 (pip or conda)
+
+* itchat
 
 ## 电台接口
 
 [传送门]()
 
-* itchat
-
-# Run
+# To Run
 
 ## 语音助手
 
@@ -53,3 +53,11 @@ P   // 放上一首
 N   // 放下一首
 S   // 停止播放
 ```
+
+# 谢三大佬带飞
+
+* [wcx](https://github.com/chenxi-wang)
+
+* [wzr](https://github.com/wzrain)
+
+* [hyx](https://github.com/Riften)
